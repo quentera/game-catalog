@@ -1,0 +1,26 @@
+# Laravel-specific
+/src/vendor/
+/src/node_modules/
+/src/public/storage
+/src/storage/*.key
+# /src/.env
+# /src/.env.*
+/src/phpunit.result.cache
+/src/Homestead.*
+/src/npm-debug.log
+/src/yarn-error.log
+
+# IDEs & OS junk
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Docker & deployment
+# dockerfiles/
+ssl/
+# docker-compose.yml
+# dockerfile
+src/storage/*
+!src/storage/**/*.gitignore
+src/composer.lock

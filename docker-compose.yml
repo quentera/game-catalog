@@ -1,0 +1,104 @@
+# version: "3.8"
+
+services:
+  php:
+    container_name: game-catalog-php
+    build:
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      - ./src:/var/www/html:delegated
+      - ./dockerfiles/configs/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    networks:
+      - microservice_net
+    restart: unless-stopped
+
+  nginx:
+    container_name: game-catalog-nginx
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "8083:80"    # NGINX HTTP port for game-catalog
+      - "8445:443"   # NGINX HTTPS port for game-catalog
+    volumes:
+      - ./src:/var/www/html:delegated
+      - ./ssl:/etc/ssl
+    depends_on:
+      - php
+      - redis
+      - postgresql
+    networks:
+      - microservice_net
+    restart: unless-stopped
+
+  postgresql:
+    image: postgres:17
+    container_name: game-catalog-db
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/postgres
+      TZ: ${TIME_ZONE}
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - "${FORWARD_DB_PORT:-5434}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${DB_DATABASE} -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservice_net
+    restart: unless-stopped
+
+  redis:
+    container_name: game-catalog-redis
+    image: redis:alpine
+    ports:
+      - "${FORWARD_REDIS_PORT:-6381}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      retries: 3
+      timeout: 5s
+    networks:
+      - microservice_net
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: catalog_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gamecatalog.com
+      PGADMIN_DEFAULT_PASSWORD: secret123
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "8092:80"
+    depends_on:
+      - postgresql
+    networks:
+      - microservice_net
+    restart: unless-stopped
+
+networks:
+  microservice_net:
+    external: true
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
