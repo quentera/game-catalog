@@ -1,26 +1,27 @@
-# Laravel-specific
-/src/vendor/
-/src/node_modules/
-/src/public/storage
+vendor/
+developer-note.txt
+.env
+# Ignore all files in storage, except required .gitignore files
+/src/storage/*
+!/src/storage/.gitignore
+!/src/storage/app/
+/src/storage/app/*
+!/src/storage/app/.gitignore
+!/src/storage/app/public/
+/src/storage/app/public/*
+!/src/storage/app/public/.gitignore
+!/src/storage/framework/
+/src/storage/framework/*
+!/src/storage/framework/.gitignore
+!/src/storage/framework/cache/
+/src/storage/framework/cache/*
+!/src/storage/framework/cache/.gitignore
+!/src/storage/framework/cache/data/
+/src/storage/framework/cache/data/.gitignore
+!/src/storage/framework/sessions/.gitignore
+!/src/storage/framework/testing/.gitignore
+!/src/storage/framework/views/.gitignore
+!/src/storage/logs/.gitignore
+
+# Exclude keys (security)
 /src/storage/*.key
-# /src/.env
-# /src/.env.*
-/src/phpunit.result.cache
-/src/Homestead.*
-/src/npm-debug.log
-/src/yarn-error.log
-
-# IDEs & OS junk
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Docker & deployment
-# dockerfiles/
-ssl/
-# docker-compose.yml
-# dockerfile
-src/storage/*
-!src/storage/**/*.gitignore
-src/composer.lock

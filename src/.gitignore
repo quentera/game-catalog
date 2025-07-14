@@ -22,3 +22,10 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Docker-specific
+*.log
+docker-compose.override.yml
+
+# Docker-specific
+*.log
+docker-compose.override.yml
