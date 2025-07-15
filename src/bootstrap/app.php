@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\apiResponseMiddleware;
+use App\Http\Middleware\ApiResponseMiddleware;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->append(apiResponseMiddleware::class);
+        $middleware->append(ApiResponseMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (Throwable $exception){
