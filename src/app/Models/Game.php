@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 class Game extends Model
 {
     use SoftDeletes;
@@ -35,6 +35,7 @@ class Game extends Model
         'jackpot_info',
         'bonus_info',
         'games_log',
+        'category_type'
     ];
 
     protected $casts = [
