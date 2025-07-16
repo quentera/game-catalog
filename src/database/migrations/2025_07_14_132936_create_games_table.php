@@ -15,11 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('partner_id');
             $table->uuid('provider_id');
-            $table->string('category');
-            $table->string('category_type');
-
+            $table->string('category');  // casino | livetable | virtual game |
+            $table->string('category_type'); // slot | reel | casino | live table | live | virtual
             $table->string('game_name');
-            $table->string('game_id')->unique();
             $table->boolean('desktop')->default(true);
             $table->boolean('mobile')->default(true);
             $table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
